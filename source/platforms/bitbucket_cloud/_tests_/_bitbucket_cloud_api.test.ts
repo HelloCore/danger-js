@@ -198,7 +198,7 @@ describe("API testing - BitBucket Cloud", () => {
         },
       ],
     })
-    const result = await api.getDangerComments("1")
+    const result = await api.getDangerMainComments("1")
 
     expect(api.fetch).toHaveBeenCalledWith(
       "https://api.bitbucket.org/2.0/repositories/foo/bar/pullrequests/1/comments?q=deleted=false",
