@@ -51,15 +51,9 @@ export class Bitrise implements CISource {
   }
 
   get isPR(): boolean {
-    const mustHave = ["GIT_REPOSITORY_URL"]
+    const mustHave = ["BITRISEIO_GIT_REPOSITORY_OWNER", "BITRISEIO_GIT_REPOSITORY_SLUG"]
     const mustBeInts = ["BITRISE_PULL_REQUEST"]
     return ensureEnvKeysExist(this.env, mustHave) && ensureEnvKeysAreInt(this.env, mustBeInts)
-  }
-
-  private _parseRepoURL(): string {
-    const repoURL = this.env.GIT_REPOSITORY_URL
-    let regexp = repoURL.startsWith("git") ? /(.+):/ : /^http(s):\/\/(www[0-9]?\.)?(.[^/:]+)\//
-    return repoURL.replace(regexp, "").replace(/.git$/, "")
   }
 
   get pullRequestID(): string {
@@ -67,14 +61,16 @@ export class Bitrise implements CISource {
   }
 
   get repoSlug(): string {
-    return this._parseRepoURL()
+    return `${this.env.BITRISEIO_GIT_REPOSITORY_OWNER}/${this.env.BITRISEIO_GIT_REPOSITORY_SLUG}`
   }
 
   get ciRunURL() {
-    return this.env.BITRISE_PULL_REQUEST
+    return this.env.BITRISE_BUILD_URL
   }
 
   get commitHash() {
     return this.env.BITRISE_GIT_COMMIT
   }
 }
+
+// See https://devcenter.bitrise.io/builds/available-environment-variables/

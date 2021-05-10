@@ -39,10 +39,10 @@ interface BitBucketCloudPRDSL {
   description: string
   /** The pull request's current status. */
   state: "OPEN" | "MERGED" | "DECLINED" | "SUPERSEDED"
-  /** Date PR created as number of milliseconds since the unix epoch */
-  created_on: number
-  /** Date PR updated as number of milliseconds since the unix epoch */
-  updated_on: number
+  /** When the pr was created, in ISO 8601 format */
+  created_on: string
+  /** When the pr was updated, in ISO 8601 format */
+  updated_on: string
   /** The PR's source, The repo Danger is running on  */
   source: BitBucketCloudMergeRef
   /** The PR's destination */
@@ -892,6 +892,16 @@ type GitMatchResult = {
 /** The git specific metadata for a PR */
 interface GitDSL extends GitJSONDSL {
   /**
+   * The git commit Danger is comparing from.
+   */
+  base: string
+
+  /**
+   * The git commit Danger is comparing to.
+   */
+  head: string
+
+  /**
    * A Chainsmoker object to help match paths as an elegant DSL. It
    * lets you write a globbed string and then get booleans on whether
    * there are matches within a certain part of the git DSL.
@@ -963,8 +973,10 @@ interface GitDSL extends GitJSONDSL {
 
   /**
    * Offers the overall lines of code added/removed in the diff
+   *
+   * @param {string} pattern an option glob pattern to filer files that will considered for lines of code.
    */
-  linesOfCode(): Promise<number | null>
+  linesOfCode(pattern?: string): Promise<number | null>
 }
 // This is `danger.github` inside the JSON
 
@@ -1433,6 +1445,8 @@ interface GitLabJSONDSL {
   mr: GitLabMR
   /** All of the individual commits in the merge request */
   commits: GitLabMRCommit[]
+  /** Merge Request-level MR approvals Configuration */
+  approvals: GitLabApproval
 }
 
 // danger.gitlab
@@ -1690,6 +1704,25 @@ interface GitLabRepositoryCompare {
   diffs: GitLabMRChange[]
   compare_timeout: boolean
   compare_same_ref: boolean
+}
+
+interface GitLabApproval {
+  id: number
+  iid: number
+  project_id: number
+  title: string
+  description: string
+  state: "closed" | "open" | "locked" | "merged"
+  created_at: string
+  updated_at: string
+  merge_status: "can_be_merged"
+  approvals_required: number
+  approvals_left: number
+  approved_by?:
+    | {
+        user: GitLabUser
+      }[]
+    | GitLabUser[]
 }
 /**
  * The result of user doing warn, message or fail, built this way for

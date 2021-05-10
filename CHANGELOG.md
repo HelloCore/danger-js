@@ -1,6 +1,6 @@
 <!--
 
-// Please add your own contribution below inside the Master section, no need to
+// Please add your own contribution below inside the Main section, no need to
 // set a version number, that happens during a deploy. Thanks!
 //
 // These docs are aimed at users rather than danger developers, so please limit technical
@@ -11,13 +11,64 @@
 
 -->
 
-## Master
+## Main
 
 <!-- Your comment below this -->
 
-<!-- Your comment above this -->
+- Fix for supporting Bitbucket Server personal repositories
+  <!-- Your comment above this -->
 
-# 10.4.2
+# 10.6.5
+
+- Improvements to the git parsing for `danger local` - [@denieler]
+- Bitbucket Cloud: Fix type of BitBucketCloudPRDSL.created_on and updated_on. - [@hellocore]
+
+# 10.6.4
+
+- DEBUG="\*" will now log out the response for any HTTP request which isn't classed as "OK" - [@orta]
+
+# 10.6.3
+
+- Fixed Bitrise's `ciRunURL` underlying env var - [@rogerluan]
+- Simplified Bitrise repo slug lookup, fixing SSH URL parsing in BitBucketServer - [@rogerluan]
+- Log failure to update status also when not in verbose mode - [@rogerluan]
+
+# 10.6.2
+
+- Added Codemagic.io as a supported CI - [@fbartho]
+- Switched Danger's default branch to be 'main' from 'master' - [@orta]
+- Added GitLab Approvals to the DSL: `gitlab.approvals` - kelvin-lemon
+
+# 10.6.1
+
+- Better detection of using the github actions bot for comment deletion - [@orta]
+
+# 10.6.0
+
+- Bitbucket Cloud: Add markdown emoji instead of unicode - [@JanStevens]
+- Add `DANGER_DISABLE_TSC` environment variable to disable transpiling with tsc, providing a way to force transpiling
+  with Babel - [@ozzieorca]
+- Adds options `--newComment` and `--removePreviousComments` - [@davidhouweling]
+- Add support for a file path filter when calculation lines of code - [@melvinvermeer]
+
+# 10.5.4
+
+- Fix for `danger local` not passing through `--staging` - [@g3offrey]
+
+# 10.5.3
+
+- Fix for `danger local` not showing commit messages - [@hmschreiner]
+
+# 10.5.2
+
+- Adds `danger.git.head` and `danger.git.base` - [@jamiebuilds]
+
+# 10.5.1
+
+- Bitbucket Cloud: Fix bug when Danger updating inline comment with summary comment. - [@hellocore]
+- Fall back to alternative methods for establishing the PR number from CodeBuild - [@alexandermendes]
+
+# 10.5.0
 
 - Handle deprecations for the APIs used with `--use-github-checks` #1073 [@wardpeet](https://github.com/wardpeet)
 
@@ -559,7 +610,7 @@ Also, `danger pr` now accepts a `--process` arg.
         body: "Here is your new repo template files",
         owner: "orta",
         repo: "new-repo",
-        baseBranch: "master",
+        baseBranch: "main",
         newBranchName: "welcome",
         commitMessage: "Sets up the welcome package",
       },
@@ -1843,3 +1894,8 @@ Not usable for others, only stubs of classes etc. - [@orta]
 [@soyn]: https://github.com/Soyn
 [@tim3trick]: https://github.com/tim3trick
 [@doniyor2109]: https://github.com/doniyor2109
+[@alexandermendes]: https://github.com/alexandermendes
+[@jamiebuilds]: https://github.com/jamiebuilds
+[@hmschreiner]: https://github.com/hmschreiner
+[@g3offrey]: https://github.com/g3offrey
+[@denieler]: https://github.com/denieler

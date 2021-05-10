@@ -130,7 +130,12 @@ export class GitHubAPI {
       return parseInt(perilID)
     }
 
-    const useGitHubActionsID = process.env["GITHUB_WORKFLOW"] && !process.env["DANGER_GITHUB_API_TOKEN"]
+    const info = await this.getUserInfo()
+    if (info.id) {
+      return info.id
+    }
+
+    const useGitHubActionsID = process.env["GITHUB_WORKFLOW"]
     if (useGitHubActionsID) {
       // This is the user.id of the github-actions app (https://github.com/apps/github-actions)
       // that is used to comment when using danger in a GitHub Action
@@ -138,8 +143,7 @@ export class GitHubAPI {
       return 41898282
     }
 
-    const info = await this.getUserInfo()
-    return info.id
+    return undefined
   }
 
   postPRComment = async (comment: string): Promise<any> => {
@@ -372,9 +376,10 @@ export class GitHubAPI {
     // this failure could be due to access rights.
     //
     // So only error when it's a real message.
+    const statusURL = `repos/${repo}/statuses/${ref}`
     try {
       const res = await this.post(
-        `repos/${repo}/statuses/${ref}`,
+        statusURL,
         {},
         {
           state: state,
@@ -384,11 +389,14 @@ export class GitHubAPI {
         },
         true
       )
+      if (!res.ok) {
+        this.d(`Got a non-OK (${res.status} ${res.statusText}) response from ${statusURL}:`)
+        this.d(JSON.stringify(res, null, "  "))
+      }
       return res.ok
     } catch (error) {
-      if (prJSON.base.repo.private) {
-        console.log("Could not post a commit status.")
-      }
+      this.d(`Posting a status to: ${statusURL} failed, this is the response:`)
+      this.d(error.message)
     }
   }
 

@@ -1,6 +1,6 @@
 {
   "name": "danger",
-  "version": "10.5.0",
+  "version": "10.6.4",
   "description": "Unit tests for Team Culture",
   "main": "distribution/danger.js",
   "typings": "distribution/danger.d.ts",
@@ -71,7 +71,7 @@
     "docs:cp_defs": "mkdir docs/docs_generate; cp source/danger.d.ts docs/docs_generate; cp node_modules/@octokit/rest/index.d.ts docs/docs_generate/github.d.ts",
     "docs": "yarn run docs:cp_defs; yarn typedoc --ignoreCompilerErrors --mode modules --json docs/js_ref_dsl_docs.json --includeDeclarations source",
     "dts-lint": "yarn run declarations && yarn dtslint types",
-    "danger:prepush": "yarn build:fast; yarn test:fixtures; node distribution/commands/danger.js local --dangerfile dangerfile.lite.ts"
+    "danger:prepush": "yarn build:fast; yarn test:fixtures; node distribution/commands/danger.js local --base main --dangerfile dangerfile.lite.ts"
   },
   "repository": {
     "type": "git",
@@ -131,7 +131,7 @@
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.15.0",
     "typedoc": "0.9.0",
-    "typescript": "^3.1.1",
+    "typescript": "^3.9.7",
     "typescript-json-schema": "^0.32.0"
   },
   "dependencies": {
